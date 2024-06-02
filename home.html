@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checker Crypto Price</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 290px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3, h4, h5 {
+            text-align: center;
+            color: #333;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            width: calc(50% - 10px);
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .get-price {
+            background-color: #007bff;
+        }
+
+        .get-price:hover {
+            background-color: #0056b3;
+        }
+
+        .crypto-calculator {
+            background-color: #28a745;
+        }
+
+        .crypto-calculator:hover {
+            background-color: #218838;
+        }
+
+        .clear {
+            background-color: #dc3545;
+            width: 100%;
+        }
+
+        .clear:hover {
+            background-color: #c82333;
+        }
+
+        .crypto-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+
+        .crypto-button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .description {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .description p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .social-icons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            font-size: 24px;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div><h1>Welcome to Best Crypto Price Checker</h1></div>
+    <div class="social-icons">
+        <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.whatsapp.com" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    </div>
+ 
+    <div class="container">
+        <h1>Checker Crypto Price</h1>
+        <input type="text" id="searchInput" placeholder="Enter coin id (e.g., btc, sol, trx)">
+        <select id="exchangeSelect">
+            <option value="binance">Binance</option>
+            <option value="coinbase">Coinbase</option>
+            <option value="bybit">bybit</option>
+        </select>
+        <div style="display: flex; justify-content: space-between;">
+            <button class="get-price" onclick="fetchPrice()">Get Price</button>
+            <button class="crypto-calculator" onclick="openCryptoCalculator()"> Calculator</button>
+        </div>
+        <button class="clear" onclick="clearResult()">Clear</button>
+        <div id="result"></div>
+    </div>
+    
+    <button class="crypto-button" onclick="openCryptoCalculator()">Crypto Calculator</button>
+
+    <div class="description">
+        <h2>About the Crypto Price Checker</h2>
+        <h3>What is this app?</h3>
+        <p>This app allows you to quickly check the current prices of various cryptocurrencies across different exchanges.</p>
+        <h2>How to Use</h2>
+        <h3>Step-by-Step Instructions:</h3>
+        <p>
+            1. Enter the coin ID of the cryptocurrency you want to check (e.g., btc for Bitcoin, sol for Solana, trx for TRON).<br>
+            2. Select the exchange you want to get the price from (Binance, Coinbase, or bybit).<br>
+            3. Click on the "Get Price" button to fetch the current prices.<br>
+            4. To refresh the prices, click on the "Crypto Calculator" button.<br>
+            5. To clear the results and input fields, click on the "Clear" button.
+        </p>
+    </div>
+
+    <script>
+        let lastCoinId = '';
+        let lastExchange = '';
+
+        async function fetchPrice() {
+            const coinId = document.getElementById('searchInput').value.toLowerCase();
+            const exchange = document.getElementById('exchangeSelect').value;
+            const resultDiv = document.getElementById('result');
+
+            if (coinId === "") {
+                resultDiv.innerHTML = "Please enter a coin id.";
+                return;
+            }
+
+            lastCoinId = coinId;
+            lastExchange = exchange;
+
+            const currencies = ['usd', 'ngn', 'eur', 'gbp', 'kwd'];
+            const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=${currencies.join(',')}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                if (data[coinId]) {
+                    const prices = currencies.map(currency => `${currency.toUpperCase()}: ${data[coinId][currency]}`).join('<br>');
+                    resultDiv.innerHTML = `Current prices for ${coinId.toUpperCase()} on ${exchange}:<br>${prices}`;
+                } else {
+                    resultDiv.innerHTML = `Coin not found. Please check the coin id and try again.`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        function openCryptoCalculator() {
+            window.location.href = 'crypto-calculator.html';
+        }
+
+        function clearResult() {
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('exchangeSelect').selectedIndex = 0;
+            lastCoinId = '';
+            lastExchange = '';
+        }
+    </script>
+</body>
+</html>
