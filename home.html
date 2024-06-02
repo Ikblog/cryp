@@ -132,9 +132,30 @@
         .social-icons a:hover {
             color: #007bff;
         }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer-links a {
+            margin: 0 10px;
+            font-size: 16px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+    <div class="footer-links">
+        <a href="/blog" target="_blank">HOME</a>
+        <a href="/policy" target="_blank">BLOG</a>
+        <a href="/team-of-use" target="_blank">POLICY</a>
+    </div>
     <div><h1>Welcome to Best Crypto Price Checker</h1></div>
     <div class="social-icons">
         <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
@@ -175,6 +196,12 @@
         </p>
     </div>
 
+    <div class="footer-links">
+        <a href="/blog" target="_blank">Blog</a>
+        <a href="/policy" target="_blank">Policy</a>
+        <a href="/team-of-use" target="_blank">Team of Use</a>
+    </div>
+
     <script>
         let lastCoinId = '';
         let lastExchange = '';
@@ -185,7 +212,7 @@
             const resultDiv = document.getElementById('result');
 
             if (coinId === "") {
-                resultDiv.innerHTML = "Please enter a coin id.";
+                resultDiv.innerHTML = "Please enter the Name of the Coin.";
                 return;
             }
 
