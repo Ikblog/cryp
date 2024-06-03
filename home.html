@@ -22,13 +22,15 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        h1, h2, h3, h4, h5 {
+        h1 {
             text-align: center;
             color: black;
+            margin-bottom: 20px;
         }
 
-        h1 {
-            margin-bottom: 20px;
+        h2, h3, h4, h5 {
+            text-align: center;
+            color: black;
         }
 
         input, select {
@@ -148,6 +150,37 @@
         .footer-links a:hover {
             text-decoration: underline;
         }
+
+        dialog {
+            border: none;
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        dialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .dialog-close-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .dialog-close-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -180,7 +213,7 @@
 </div>
  
     <div class="container">
-        <h1>Check Crypto Price</h1>
+        <h2>Check Crypto Price</h1>
         <input type="text" id="searchInput" placeholder="Enter coin id (e.g., btc, sol, trx)">
         <select id="exchangeSelect">
             <option value="binance">Binance</option>
@@ -218,6 +251,11 @@
         <a href="/team-of-use" target="_blank">Team of Use</a>
     </div>
 
+    <dialog id="priceDialog">
+        <div id="dialogContent"></div>
+        <button class="dialog-close-button" onclick="closeDialog()">Close</button>
+    </dialog>
+
     <script>
         let lastCoinId = '';
         let lastExchange = '';
@@ -228,7 +266,7 @@
             const resultDiv = document.getElementById('result');
 
             if (coinId === "") {
-                resultDiv.innerHTML = "Please enter the Name of the Coin.";
+                showDialog("Please enter the Name of the Coin.");
                 return;
             }
 
@@ -247,13 +285,25 @@
                 const data = await response.json();
                 if (data[coinId]) {
                     const prices = currencies.map(currency => `${currency.toUpperCase()}: ${data[coinId][currency]}`).join('<br>');
-                    resultDiv.innerHTML = `Current prices for ${coinId.toUpperCase()} on ${exchange}:<br>${prices}`;
+                    showDialog(`Current prices for ${coinId.toUpperCase()} on ${exchange}:<br>${prices}`);
                 } else {
-                    resultDiv.innerHTML = `Coin not found. Please check the coin id and try again.`;
+                    showDialog(`Coin not found. Please check the coin id and try again.`);
                 }
             } catch (error) {
-                resultDiv.innerHTML = `Error: ${error.message}`;
+                showDialog(`Error: ${error.message}`);
             }
+        }
+
+        function showDialog(message) {
+            const dialog = document.getElementById('priceDialog');
+            const dialogContent = document.getElementById('dialogContent');
+            dialogContent.innerHTML = message;
+            dialog.showModal();
+        }
+
+        function closeDialog() {
+            const dialog = document.getElementById('priceDialog');
+            dialog.close();
         }
 
         function openCryptoCalculator() {
