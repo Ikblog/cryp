@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Word Search Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #game-container {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #puzzle {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            gap: 5px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        #puzzle div {
+            width: 30px;
+            height: 30px;
+            background-color: #fff;
+            border: 1px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        #words-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #words-list li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Crypto Word Search Puzzle Game</h1>
+    </header>
+    <main>
+        <div id="game-container">
+            <div id="player-selection">
+                <h2>Select Player</h2>
+                <input type="text" id="player-name" placeholder="Enter your name">
+                <button id="start-game">Start Game</button>
+            </div>
+            <div id="word-search" class="hidden">
+                <h2>Word Search Puzzle</h2>
+                <div id="puzzle"></div>
+                <ul id="words-list"></ul>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Crypto Games. All rights reserved.</p>
+    </footer>
+    <script>
+        document.getElementById('start-game').addEventListener('click', startGame);
+
+        const words = ["BITCOIN", "ETHEREUM", "RIPPLE", "LITECOIN", "DOGECOIN", "CARDANO", "POLKADOT", "CHAINLINK", "STELLAR", "MONERO"];
+        const gridSize = 10;
+        const puzzle = document.getElementById('puzzle');
+        const wordsList = document.getElementById('words-list');
+
+        function startGame() {
+            const playerName = document.getElementById('player-name').value;
+            if (playerName.trim() === "") {
+                alert("Please enter your name.");
+                return;
+            }
+
+            document.getElementById('player-selection').classList.add('hidden');
+            document.getElementById('word-search').classList.remove('hidden');
+
+            generatePuzzle();
+            displayWords();
+        }
+
+        function generatePuzzle() {
+            const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+            words.forEach(word => placeWordInGrid(word, grid));
+            fillEmptySpaces(grid);
+            renderPuzzle(grid);
+        }
+
+        function placeWordInGrid(word, grid) {
+            let placed = false;
+            while (!placed) {
+                const direction = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+                const startX = Math.floor(Math.random() * (direction === 'horizontal' ? gridSize - word.length : gridSize));
+                const startY = Math.floor(Math.random() * (direction === 'vertical' ? gridSize - word.length : gridSize));
+
+                if (canPlaceWord(word, startX, startY, direction, grid)) {
+                    for (let i = 0; i < word.length; i++) {
+                        grid[startY + (direction === 'vertical' ? i : 0)][startX + (direction === 'horizontal' ? i : 0)] = word[i];
+                    }
+                    placed = true;
+                }
+            }
+        }
+
+        function canPlaceWord(word, startX, startY, direction, grid) {
+            for (let i = 0; i < word.length; i++) {
+                const x = startX + (direction === 'horizontal' ? i : 0);
+                const y = startY + (direction === 'vertical' ? i : 0);
+                if (grid[y][x] !== '') return false;
+            }
+            return true;
+        }
+
+        function fillEmptySpaces(grid) {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    if (grid[y][x] === '') {
+                        grid[y][x] = letters.charAt(Math.floor(Math.random() * letters.length));
+                    }
+                }
+            }
+        }
+
+        function renderPuzzle(grid) {
+            puzzle.innerHTML = '';
+            grid.forEach(row => {
+                row.forEach(letter => {
+                    const cell = document.createElement('div');
+                    cell.textContent = letter;
+                    puzzle.appendChild(cell);
+                });
+            });
+        }
+
+        function displayWords() {
+            wordsList.innerHTML = '';
+            words.forEach(word => {
+                const listItem = document.createElement('li');
+                listItem.textContent = word;
+                wordsList.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>
