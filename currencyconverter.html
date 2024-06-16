@@ -204,8 +204,8 @@
             }
 
             document.getElementById("loadingSpinner").style.display = "block";
-            const apiKey = "YOUR_API_KEY"; // Replace with your API key from a currency conversion API
-            const url = `https://api.exchangerate-api.com/v4/latest/${fromCurrency}`;
+            const apiKey = "YOUR_FREE_API_KEY"; // Replace with your free API key from ExchangeRate-API
+            const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${fromCurrency}`;
 
             fetch(url)
                 .then(response => {
@@ -215,7 +215,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    const rate = data.rates[toCurrency];
+                    const rate = data.conversion_rates[toCurrency];
                     if (!rate) {
                         throw new Error("Conversion rate not found");
                     }
@@ -233,19 +233,18 @@
 
         function fetchExchangeRates() {
             const currencies = ["USD", "NGN", "EUR", "GBP"];
-            const apiKey = "YOUR_API_KEY"; // Replace with your API key from Alpha Vantage
+            const apiKey = "YOUR_FREE_API_KEY"; // Replace with your free API key from ExchangeRate-API
 
             const flagUrls = {
-                "USD": "https://www.countryflags.io/us/flat/64.png",
-                "EUR": "https://www.countryflags.io/eu/flat/64.png",
-                "GBP": "https://www.countryflags.io/gb/flat/64.png",
-                "NGN": "https://www.countryflags.io/ng/flat/64.png",
-            
+                "USD": "https://flagcdn.com/us.svg",
+                "EUR": "https://flagcdn.com/eu.svg",
+                "GBP": "https://flagcdn.com/gb.svg",
+                "NGN": "https://flagcdn.com/ng.svg",
             };
 
             document.getElementById("exchangeRates").innerHTML = "";
             currencies.forEach(currency => {
-                fetch(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=${currency}&apikey=${apiKey}`)
+                fetch(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error("Network response was not ok");
@@ -253,7 +252,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        const rate = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"];
+                        const rate = data.conversion_rates[currency];
                         if (!rate) {
                             throw new Error("Rate not found");
                         }
