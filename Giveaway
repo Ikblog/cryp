@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Code Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: blue;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button, a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 5px;
+        }
+
+        button:hover, a.button:hover {
+            background-color: #218838;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        #giveaway {
+            display: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        #language-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .dialog-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="language-dialog">
+        <div class="dialog-box">
+            <h2>Select Language</h2>
+            <button onclick="setLanguage('en')">English</button>
+            <button onclick="setLanguage('ha')">Hausa</button>
+        </div>
+    </div>
+
+    <div class="container" id="access-container">
+        <h1 id="enter-access-code">Enter Access Code</h1>
+        <img src="https://www.pixartprinting.co.uk/blog/wp-content/uploads/2021/06/giveaways.jpg" alt="Promotional Image">
+        <p><a href="https://www.youtube.com/watch?v=lrmwnWAiml4" target="_blank" class="button" id="watch-video">Watch to get the code to unlock the giveaway</a></p>
+        <input type="text" id="accessCode" placeholder="Enter code here">
+        <button onclick="validateCode()" id="submit-button">Submit</button>
+        <p id="error" class="error"></p>
+    </div>
+
+    <div class="container" id="giveaway">
+        <h1 id="congratulations">Congratulations! You have accessed the giveaway page.</h1>
+        <p id="enjoy-prize">Enjoy your prize!</p>
+        <p><a href="https://www.youtube.com/watch?v=lrmwnWAiml4" target="_blank" class="button" id="get-prize">Click to Get Your Prize</a></p>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            const textContent = {
+                en: {
+                    enterAccessCode: 'Enter Access Code',
+                    watchVideo: 'Watch to get the code to unlock the giveaway',
+                    submitButton: 'Submit',
+                    invalidCode: 'Invalid code. Please try again.',
+                    congratulations: 'Congratulations! You have accessed the giveaway page.',
+                    enjoyPrize: 'Enjoy your prize!',
+                    getPrize: 'Click to Get Your Prize'
+                },
+                ha: {
+                    enterAccessCode: 'Shigar da Lambar Shiga',
+                    watchVideo: 'Kalli don samun lambar don buɗe kyauta',
+                    submitButton: 'Aika',
+                    invalidCode: 'Lambar ba daidai ba ce. Da fatan za a sake gwadawa.',
+                    congratulations: 'Taya murna! Kun sami damar shigar da shafin kyauta.',
+                    enjoyPrize: 'Ji daɗin kyautarku!',
+                    getPrize: 'Danna don Samun Kyautar ku'
+                }
+            };
+
+            document.getElementById('enter-access-code').textContent = textContent[lang].enterAccessCode;
+            document.getElementById('watch-video').textContent = textContent[lang].watchVideo;
+            document.getElementById('submit-button').textContent = textContent[lang].submitButton;
+            document.getElementById('error').textContent = '';
+            document.getElementById('congratulations').textContent = textContent[lang].congratulations;
+            document.getElementById('enjoy-prize').textContent = textContent[lang].enjoyPrize;
+            document.getElementById('get-prize').textContent = textContent[lang].getPrize;
+
+            document.getElementById('language-dialog').style.display = 'none';
+        }
+
+        function validateCode() {
+            const accessCode = document.getElementById('accessCode').value;
+            const correctCode = '1234'; // The correct code to access the giveaway page
+            const errorMessage = document.getElementById('error');
+
+            if (accessCode === correctCode) {
+                document.getElementById('access-container').style.display = 'none';
+                document.getElementById('giveaway').style.display = 'block';
+            } else {
+                errorMessage.textContent = document.getElementById('enter-access-code').textContent.includes('Enter') ? 'Invalid code. Please try again.' : 'Lambar ba daidai ba ce. Da fatan za a sake gwadawa.';
+            }
+        }
+    </script>
+</body>
+</html>
