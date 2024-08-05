@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Details Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .phone-details {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phone Details Checker</h1>
+        <input type="text" id="phoneName" placeholder="Enter phone name" />
+        <button onclick="checkPhoneDetails()">Check Details</button>
+        
+        <div id="phoneDetails" class="phone-details"></div>
+    </div>
+
+    <script>
+        function checkPhoneDetails() {
+            const phoneName = document.getElementById('phoneName').value.trim().toLowerCase();
+            const phoneDetails = document.getElementById('phoneDetails');
+
+            const phones = {
+                'iphone 14': {
+                    manufacturer: 'Apple',
+                    releaseDate: 'September 2022',
+                    features: ['A16 Bionic chip', '5G support', 'OLED display']
+                },
+                'iphone 13': {
+                    manufacturer: 'Apple',
+                    releaseDate: 'September 2021',
+                    features: ['A15 Bionic chip', '5G support', 'Super Retina XDR display']
+                },
+                'iphone 12': {
+                    manufacturer: 'Apple',
+                    releaseDate: 'October 2020',
+                    features: ['A14 Bionic chip', '5G support', 'Super Retina XDR display']
+                },
+                'iphone 11': {
+                    manufacturer: 'Apple',
+                    releaseDate: 'September 2019',
+                    features: ['A13 Bionic chip', 'Liquid Retina HD display', 'Dual-camera system']
+                },
+                'samsung galaxy s23': {
+                    manufacturer: 'Samsung',
+                    releaseDate: 'February 2023',
+                    features: ['Snapdragon 8 Gen 2', '5G support', 'AMOLED display']
+                },
+                'samsung galaxy s22': {
+                    manufacturer: 'Samsung',
+                    releaseDate: 'February 2022',
+                    features: ['Snapdragon 8 Gen 1', '5G support', 'Dynamic AMOLED 2X display']
+                },
+                'samsung galaxy s21': {
+                    manufacturer: 'Samsung',
+                    releaseDate: 'January 2021',
+                    features: ['Exynos 2100 / Snapdragon 888', '5G support', 'Dynamic AMOLED 2X display']
+                },
+                'samsung galaxy s20': {
+                    manufacturer: 'Samsung',
+                    releaseDate: 'March 2020',
+                    features: ['Exynos 990 / Snapdragon 865', '5G support', 'Dynamic AMOLED 2X display']
+                },
+                'google pixel 7': {
+                    manufacturer: 'Google',
+                    releaseDate: 'October 2022',
+                    features: ['Google Tensor chip', '5G support', 'OLED display']
+                },
+                'google pixel 6': {
+                    manufacturer: 'Google',
+                    releaseDate: 'October 2021',
+                    features: ['Google Tensor chip', '5G support', 'AMOLED display']
+                },
+                'google pixel 5': {
+                    manufacturer: 'Google',
+                    releaseDate: 'October 2020',
+                    features: ['Snapdragon 765G', '5G support', 'OLED display']
+                },
+                'google pixel 4': {
+                    manufacturer: 'Google',
+                    releaseDate: 'October 2019',
+                    features: ['Snapdragon 855', 'OLED display', 'Motion Sense technology']
+                },
+                'oneplus 11': {
+                    manufacturer: 'OnePlus',
+                    releaseDate: 'February 2023',
+                    features: ['Snapdragon 8 Gen 2', '5G support', 'Fluid AMOLED display']
+                },
+                'oneplus 10': {
+                    manufacturer: 'OnePlus',
+                    releaseDate: 'January 2022',
+                    features: ['Snapdragon 8 Gen 1', '5G support', 'Fluid AMOLED display']
+                },
+                'oneplus 9': {
+                    manufacturer: 'OnePlus',
+                    releaseDate: 'March 2021',
+                    features: ['Snapdragon 888', '5G support', 'Fluid AMOLED display']
+                },
+                'oneplus 8': {
+                    manufacturer: 'OnePlus',
+                    releaseDate: 'April 2020',
+                    features: ['Snapdragon 865', '5G support', 'Fluid AMOLED display']
+                },
+                // Add more phones here as needed
+            };
+
+            if (phones[phoneName]) {
+                const { manufacturer, releaseDate, features } = phones[phoneName];
+                phoneDetails.innerHTML = `
+                    <h2>${phoneName}</h2>
+                    <p><strong>Manufacturer:</strong> ${manufacturer}</p>
+                    <p><strong>Release Date:</strong> ${releaseDate}</p>
+                    <p><strong>Features:</strong></p>
+                    <ul>${features.map(feature => `<li>${feature}</li>`).join('')}</ul>
+                `;
+            } else {
+                phoneDetails.innerHTML = '<p>Phone not found. Please try another name.</p>';
+            }
+        }
+    </script>
+</body>
+      </html>
+  
