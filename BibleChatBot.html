@@ -39,6 +39,7 @@
             padding: 15px;
             overflow-y: auto;
             background-color: #f5f7fa;
+            height: 70px;
         }
         .chat-content div {
             margin: 10px 0;
@@ -99,6 +100,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             outline: none;
+            height: 40px;
         }
         .chat-form button {
             margin-left: 10px;
@@ -152,7 +154,7 @@
 
         function showLoading() {
             const loadingElement = document.createElement("div");
-            loadingElement.textContent = "Chatbot is thinking...";
+            loadingElement.textContent = "Loading...";
             loadingElement.id = "loading";
             loadingElement.classList.add("loading");
             chatContent.appendChild(loadingElement);
@@ -207,4 +209,5 @@
         };
     </script>
 </body>
-</html>
+            </html>
+    
